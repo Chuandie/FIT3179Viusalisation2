@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <script src="https://cdn.jsdelivr.net/npm/vega@5.20.2"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vega-lite@5.1.1"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vega-embed@6.18.2"></script>
+</head>
+
+<style>
+    .chart {
+        border-radius: 50px;
+        margin: 20px;
+        padding: 20px;
+        height: 45vh;
+        box-shadow: 0 8px 12px rgba(0, 0, 0, 0.2);  /* 添加阴影 */
+
+    }
+
+    p {
+        border-radius: 50px;
+        margin: 20px;
+        padding: 20px;
+    }
+
+    #map {
+        width: 100%;
+        height: 70vh;  /* 修改这里以增加垂直高度 */
+    }
+
+    .header-background {
+        background-image: url(https://github.com/Chuandie/FIT3179A2/blob/main/00c7d5e9c58ab8da2ff03754212bba7.jpg?raw=true);
+        background-size: cover;
+        background-position: center;
+        background-repeat: no-repeat;
+        padding: 50px 0;
+        margin-top: 0;
+        padding-top: 0; 
+        height: 50vh;
+        box-shadow: 0 10px 15px rgba(0, 0, 0, 0.3); /* 添加阴影 */
+        margin-bottom: 30px; /* 增加间距 */
+               display: flex;
+        align-items: center; /* 垂直居中 */
+        justify-content: center; /* 水平居中 */
+        flex-direction: column; /* 使内容垂直堆叠 */
+        margin-bottom: 0;
+        
+    }
+    .background-section {
+        background-image: url('https://github.com/Chuandie/FIT3179A2/blob/main/49885e4f64cb4495df7088557302e13.jpg?raw=true');
+        background-size: cover;
+        background-repeat: no-repeat;
+        background-position: center;
+        margin-top: 0;
+    }
+    .quote {
+        font-size: 40px;  /* 将字体大小从24px改为32px */
+        color: white;
+        font-style: italic;
+        text-align: center;
+        max-width: 80%;  /* 可能需要调整max-width以适应更大的字体 */
+        line-height: 1.5;
+    }
+
+    .alcohol-warning {
+            background-color: #000066; /* 这是深蓝色 */
+            font-size: 50px;  
+            color: white; /* 更改文本颜色为白色以确保其在深蓝色背景上可见 */
+            font-style: italic;
+            text-align: center;
+            width: 100%; /* 设置宽度为100% */
+            margin: 0; /* 移除外边距 */
+            padding: 20px 0; /* 增加上下内边距，但保持左右为0 */
+            line-height: 1.5;
+            align-items: center;
+            box-sizing: border-box; /* 确保内边距和边框被包括在总宽度中 */
+        }
+        .background-last {
+            background-image: url('https://github.com/Chuandie/FIT3179A2/blob/main/49885e4f64cb4495df7088557302e13.jpg?raw=true');
+            background-size: cover;      /* 背景图片将覆盖整个div */
+            background-repeat: no-repeat; /* 背景图片不会重复 */
+            background-position: center;  /* 背景图片居中 */
+            height: 400px;  /* 你可以根据需要更改这个值 */
+            width: 100%;    /* div宽度将占据其父元素的整个宽度 */
+            min-height: 100vh; /* 至少占满一个视口的高度 */
+        }
+
+    .author {
+        margin-top: 20px;
+        font-weight: bold;
+    }
+    .top {
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        background: linear-gradient(to right, rgba(30, 60, 114, 0.5), rgba(42, 82, 152, 0.5));
+        font-family: 'Open Sans';
+        margin: 0;
+        padding: 20px 40px;  /* 减少左右间距以使背景框更宽 */
+        width: 100%;
+        box-sizing: border-box;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;  /* 确保文本垂直居中 */
+        z-index: 1000;
+        background: transparent;
+        transition: background 0.3s;
+    }
+
+    .text-white {
+        color: white;
+    }
+
+    section {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .radar-chart {
+        margin-left: 100px;
+        padding: 0;
+    }
+
+    #rose {
+      width: calc(100% - 40px);
+      height: 45vh;
+      margin: 20px;
+      padding: 20px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-sizing: border-box;  /* 使得内部的padding不会加到总宽度上 */
+      box-shadow: 0 8px 12px rgba(0, 0, 0, 0.2);  /* 添加阴影 */
+      border-radius: 50px;
+  }
+
+    #radar {
+        width: calc(100% - 40px);  /* 考虑到左右的margin，我们减去40px (20px margin on each side) */
+        border-radius: 50px;
+        margin: 20px;
+        padding: 20px;
+        height: 45vh;
+        box-shadow: 0 8px 12px rgba(0, 0, 0, 0.2);  /* 添加阴影 */
+        box-sizing: border-box;  /* 使得内部的padding不会加到总宽度上 */
+        display: flex;  /* 以下三行代码用于确保内容垂直和水平居中 */
+        align-items: center;
+        justify-content: center;
+    }
+    .chart-description {
+        color: white;
+        margin: 20px;
+        padding: 20px;
+        font-size: 20px;
+        text-align: center;
+    }
+        
+    body {
+        background-color: #f8f8f8;
+        margin: 0;
+        padding: 0;
+        font-family: 'Open Sans';
+        overflow-x: hidden;  /* 隐藏水平滚动条 */
+        }
+    
+        #rect, #radar ,#rose, #map,#scatter,#areariver{
+        background-color: #ffffff;  /* 这是一个浅灰色，您可以根据需要调整 */
+    }
+    
+    
+  </style>
+
+<body>
+
+<div class="header-background" style="margin-bottom: 20px;height: calc(100vh - 20px);">
+    <div class="top" style="display: flex;">
+        <span class="text-white" style="font-size: 42px;font-weight: 700;font-family: Broadway;"> Alcohol Overview </span>
+    </div>
+    <div class="quote"> 
+        “I prefer to think that God is not dead, just drunk.<br>
+        <span class="author">-John Marcellus Huston</span>
+    </div>
+</div>
+<div class="alcohol-warning">
+    <p>Global Alcohol Consumption and Interesting Point</p>
+</div>
+<div class="background-section">
+    <br>
+    <br>
+    <div class="chart" id="map"></div>
+    <div style="color: white; margin: 20px; padding: 20px; font-size: 20px;">
+        Alcohol, a substance with a rich history, has deeply rooted itself in various facets of human civilization. Since ancient times, alcohol has played a pivotal role in numerous social, religious, and cultural activities. Whether it's celebrated as a mark of triumph, incorporated into religious ceremonies, or merely consumed as part of daily life for relaxation, alcohol has held significant stature throughout human history.
+        <br><br>
+        This map showcases the annual alcohol consumption rates across different countries worldwide. Not only does it offer insights into the drinking cultures of various nations, but it also reveals the interplay between consumption patterns and economic, health, and social factors. Users can utilize the filter on the left to select and view the alcohol consumption rates for countries in different regions.
+        <br>
+        <br>
+        <br>
+        <br>
+    </div>
+    <section style="display: grid; grid-template-columns: 50% 50%; height: 50vh">
+        <div class="chart" id="scatter"></div>
+        <div style="color: white; margin: 20px; padding: 20px; font-size: 20px;">
+            Now that we have observed the annual alcohol consumption rates globally, let's delve into whether there's a direct correlation between alcohol consumption and the economy. The answer is, <strong style="color: rgb(155, 210, 255);font-size: 25px;">Yes</strong>. Users can discern from the scatter plot on the left that there's generally a <strong style="color: rgb(155, 210, 255);">positive correlation</strong>between GDP and alcohol consumption. In more economically developed regions, people tend to consume more alcohol.
+            <br><br>
+            (This graph's X-axis represents the annual alcohol consumption, and the Y-axis represents the GDP.)
+        </div>
+    </section>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <div style="align-items: center;color: white;text-align: center;font-size: 25px;">
+        As we all know, the economies of the United States and the United Kingdom are very developed, but what about their alcohol consumption?
+    </div>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <section style="display: grid; grid-template-columns: 50% 50%; height: 50vh">
+        <div class="chart" id="areariver"></div>
+        <div class="chart" id="rose"></div>
+    </section>
+    <div class="chart-description">
+        <p>The chart on the left is an area river graph, which displays the volume of alcohol (in liters) consumed by Americans in different venues from 1990 to 2014. Different colors represent different venues. Users can drag the slider to see more details.</p>
+        
+        <p>The chart on the right is a rose chart, showing the alcohol consumption in the UK across different income groups over the years. Interestingly, we can see that the higher the income, the more alcohol is consumed.</p>
+        
+        <p style="font-size: 25px;font-family: Broadway;color: #d5d5ff;">Overall, we can observe that both Americans and Brits really enjoy drinking.</p>
+    </div>
+
+    <br>
+    <br>
+    <br>
+    <br>
+</div>
+
+
+  <div class="alcohol-warning">
+    <p>Dangers of Alcohol</p>
+</div>
+
+
+<div class="background-last" style="margin-bottom: 20px;height: calc(100vh - 20px);">
+    <br>
+    <br>
+    <section style="display: grid; grid-template-columns: 50% 50%; height: 50vh">
+        <div class="chart" id="rect"></div>
+        <div id="radar"></div>
+    </section>
+    <div class="chart-description">
+        <p>After discussing the relaxation that alcohol can bring, it's essential to mention that excessive drinking can also cause severe harm to the body. The density chart on the left displays the number of sudden deaths per million people resulting from a specific volume of alcohol consumed. The X-axis represents the number of deaths, while the Y-axis indicates the amount of alcohol consumed. We can observe that the more alcohol consumed, the higher the probability of sudden death.</p>
+        
+        <p>However, not all drinking is for relaxation. The radar chart on the right presents the most common psychological reasons for drinking. The numbers represent the multiplier for alcohol addiction. If you identify with one of these reasons, your likelihood of alcohol dependency is multiplied by that number.</p>
+
+        <p style="font-size: 25px;font-family: Broadway;color: #d5d5ff;">In summary, while drinking can be relaxing, it's crucial not to get addicted!</p>
+    </div>
+</div>
+<div class="alcohol-warning">
+    <p>Thank you!</p>
+</div>
+
+      <script>
+        vegaEmbed("#map", "map.json");
+        vegaEmbed("#scatter", "scatter.json");
+        vegaEmbed("#rect", "rect.json");
+        vegaEmbed("#areariver", "areariver.json");
+        vegaEmbed("#rose", "rose.json");
+        vegaEmbed("#radar", "radar.json");
+
+        window.addEventListener('scroll', function() {
+          var topBar = document.querySelector('.top');
+          
+          if (window.scrollY > 0) {
+              topBar.style.background = "linear-gradient(to right, rgba(10, 30, 90, 0.7), rgba(20, 50, 130, 0.7))"; // 更深的半透明蓝色
+          } else {
+              topBar.style.background = "transparent";
+          }
+      });
+     </script>
+
+
+
+
+</body>
+</html>
